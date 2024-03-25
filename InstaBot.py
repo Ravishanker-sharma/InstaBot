@@ -8,10 +8,10 @@ import sys
 
 stop_flag = threading.Event()
 def Logout():
-    stop_function()
     os.remove("x_eca_234")
     gui.destroy()
     login()
+    quit(start_function)
 def start_function():
     # Retrieve inputs from GUI
     hashtag = hashtag_entry.get()
@@ -42,7 +42,7 @@ def get_user_pass():
         username = usernameentry.get()
         password = passwordentry.get()
     else:
-        with open("x_eca_234",'r') as f:
+        with open("x_eca_234", 'r') as f:
             info = f.read()
             username = info.splitlines()[0]
             password = info.splitlines()[1]
@@ -53,7 +53,7 @@ def on_closing():
     quit(start_function)
     stop_flag.set()  # Set the stop flag to stop the function
     gui.destroy()
-    sys.exit()  # Exit the Python script
+
 
 def GUI():
     global gui,hashtag_entry,number_of_post_entry
@@ -67,7 +67,7 @@ def GUI():
 
     try:
         if login_save.get() == 1:
-            with open("x_eca_234","w") as f:
+            with open("x_eca_234", "w") as f:
                 f.write(f"{usernameentry.get()}\n{passwordentry.get()}")
                 f.close()
         root.destroy()
@@ -78,6 +78,7 @@ def GUI():
     gui.minsize(400, 600)
     gui.maxsize(400, 600)
     gui.title("InstaBot")
+    gui.iconbitmap("instaa.ico")
     image_path = "instaa.png"
     image = CTkImage(light_image=Image.open(image_path),size=(250,250))
     CTkLabel(gui,image=image,text="").grid(row=0,column=0,columnspan=2,padx=25,pady=10)
@@ -102,6 +103,7 @@ def login():
     root.minsize(500,200)
     root.maxsize(500,200)
     root.title("InstaBot Login")
+    root.iconbitmap("instaa.ico")
     usernameentry=CTkEntry(root,width=400,height=30,placeholder_text="Username1 Username2 Username3 ....")
     usernameentry.grid(row=0,column=0,padx=40,pady=10)
     passwordentry=CTkEntry(root,width=400,height=30,placeholder_text="Password1 Password2 Password3 ....")
@@ -110,7 +112,6 @@ def login():
     login_save = CTkCheckBox(root, text="Save Info")
     login_save.grid()
     root.mainloop()
-
 if __name__ == '__main__':
     if not os.path.exists("x_eca_234"):
         login()
